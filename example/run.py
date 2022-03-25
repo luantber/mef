@@ -1,8 +1,6 @@
-
 from models.linear import Linear ## To be improved
 from dataset.mnist import Mnist
 from torch.utils.data import Dataset
-
 
 """
     This will be hidden ( will be part of the library )
