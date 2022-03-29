@@ -1,28 +1,26 @@
 import context
-from models.linear import Linear ## To be improved
+from models.linear import Linear  ## To be improved
 from dataset.mnist import Mnist
 
 # import library
 import mef
 
 if __name__ == "__main__":
-    
-    dataset = Mnist()
 
-    
+    # Create Dataset
+    my_dataset = Mnist()
 
     """
         STEP 1
 
         Create Experiment with the following parameters: 
-            - Dictionary of Models
-            - Dataset to be used
-            - Number of Iterations (move to run ? ) 
-            - Metric(s) to evaluate
+            - Dictionary of Models                       (X)
+            - Dataset to be used                         (X)
+            - Number of Iterations (move to run ? )      ( ) 
+            - Metric(s) to evaluate                      ( )
     """
-    first_exp = mef.Experiment()
-    first_exp.add_models({"Linear": Linear})  # or something similar
 
+    first_exp = mef.Experiment(models={"Linear": Linear}, dataset=my_dataset)
 
     """
         STEP 2
@@ -33,9 +31,9 @@ if __name__ == "__main__":
             - K Fold 
             - Models using same data
 
-        Should store "metric" of evaluated.
+        Should store "metric" of evaluated. 
         Should allow resume   (  How to know if )
         Reproducible ( fixed  seeds )
     """
 
-    first_exp.run( kfold = 4, iterations = 10 , metric = "accuracy" )
+    first_exp.run(  iterations=10, kfold=4, metric="accuracy" )

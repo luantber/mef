@@ -25,7 +25,7 @@ class Linear(LightningModule):
         # Initialize a trainer
         trainer = Trainer(
             gpus=1,
-            max_epochs=3,
+            max_epochs=3, 
             progress_bar_refresh_rate=20,
         )
 
