@@ -1,6 +1,8 @@
 import context
 from models.linear import Linear  ## To be improved
 from dataset.mnist import Mnist
+from dataset.dummy import Dummy
+
 
 # import library
 import mef
@@ -36,4 +38,4 @@ if __name__ == "__main__":
         Reproducible ( fixed  seeds )
     """
 
-    first_exp.run(  iterations=10, kfold=4, metric="accuracy" )
+    first_exp.run(  iterations=3, kfold=4, metric="accuracy" )
