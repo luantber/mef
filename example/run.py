@@ -2,8 +2,9 @@ import context
 from models.linear import Linear  ## To be improved
 from dataset.mnist import Mnist
 from dataset.dummy import Dummy
+from pytorch_lightning import seed_everything
 
-
+seed_everything(42, workers=True)
 # import library
 import mef
 
@@ -38,4 +39,4 @@ if __name__ == "__main__":
         Reproducible ( fixed  seeds )
     """
 
-    first_exp.run(  iterations=3, kfold=4, metric="accuracy" )
+    first_exp.run(  iterations=1, kfold=4, metric="accuracy" )

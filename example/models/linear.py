@@ -1,7 +1,11 @@
 import torch
 from torch.nn import functional as F
 from torch.utils.data import DataLoader, Dataset
-from pytorch_lightning import LightningModule, Trainer
+from pytorch_lightning import LightningModule, Trainer, seed_everything
+
+import logging
+logging.getLogger("pytorch_lightning").setLevel(logging.ERROR)
+
 
 class Linear(LightningModule):
     def __init__(self):
@@ -11,23 +15,51 @@ class Linear(LightningModule):
     def forward(self, x):
         return torch.relu(self.l1(x.view(x.size(0), -1)))
 
-    def training_step(self, batch):
+    def training_step(self, batch, idx):
         x, y = batch
         loss = F.cross_entropy(self(x), y)
         return loss
 
+    def validation_step(self, batch, idx):
+        x, y = batch
+        loss = F.cross_entropy(self(x), y)
+        self.log("val_loss", loss)
+        
+
+      
+
     def configure_optimizers(self):
         return torch.optim.Adam(self.parameters(), lr=0.02)
 
-    def custom_train(self,dataset: Dataset ):
+
+    ### Custom Part 
+
+    def custom_train(self, dataset: Dataset ):
         train_loader = DataLoader(dataset, batch_size=32, shuffle=True)
 
         # Initialize a trainer
         trainer = Trainer(
             gpus=1,
             max_epochs=3, 
-            progress_bar_refresh_rate=20,
+            enable_model_summary = False,
+            enable_progress_bar = False
+            # progress_bar_refresh_rate=20,
         )
 
         # Train the model
         trainer.fit( self , train_loader)
+
+    def custom_validation(self, dataset: Dataset ):
+        val_loader = DataLoader(dataset, batch_size=32, shuffle=False)
+
+        # Initialize a trainer
+        trainer = Trainer(
+            gpus=1,
+            enable_model_summary = False,
+            enable_progress_bar = False
+            # max_epochs=3, 
+            # progress_bar_refresh_rate=20,
+        )
+
+        # Train the model
+        return trainer.validate( self , val_loader, verbose=False)
