@@ -1,10 +1,10 @@
 import context
-from models.linear import Linear  ## To be improved
-from dataset.mnist import Mnist
-from dataset.dummy import Dummy
+from models.linear import Linear  ## To be improved  to " from models import Linear "
+from dataset.mnist import Mnist   ##< "from dataset import Mnist"
+
 from pytorch_lightning import seed_everything
 
-seed_everything(42, workers=True)
+# seed_everything(42, workers=True) 
 # import library
 import mef
 
