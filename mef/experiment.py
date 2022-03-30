@@ -31,10 +31,12 @@ class Experiment:
 
             print(f"\nIteration {i}")
             kf = KFold(
-                n_splits=kfold, random_state=self.seed, shuffle=True
+                n_splits=kfold, shuffle=True
             )  ## is it ok having the same seed ????
 
             for train_idx, test_idx in kf.split(self.dataset):
+
+                print( "fold" )
 
                 train = Subset(self.dataset, train_idx)
                 test = Subset(self.dataset, test_idx)
@@ -44,4 +46,4 @@ class Experiment:
                     model_trained = self.train_single(model_name, train)
                     results = self.validate_single(model_trained, test)
 
-                    print( results )
+                    print(results)

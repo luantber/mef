@@ -1,11 +1,13 @@
 import context
 from models.linear import Linear  ## To be improved  to " from models import Linear "
-from dataset.mnist import Mnist   ##< "from dataset import Mnist"
+from dataset.mnist import Mnist  ##< "from dataset import Mnist"
 
 from pytorch_lightning import seed_everything
+import warnings
+warnings.filterwarnings('ignore')
 
-# seed_everything(42, workers=True) 
-# import library
+seed_everything(42, workers=True)
+
 import mef
 
 if __name__ == "__main__":
@@ -19,7 +21,7 @@ if __name__ == "__main__":
         Create Experiment with the following parameters: 
             - Dictionary of Models                       (X)
             - Dataset to be used                         (X)
-            - Number of Iterations (move to run ? )      ( ) 
+            - Number of Iterations (move to run ? )      (X) 
             - Metric(s) to evaluate                      ( )
     """
 
@@ -39,4 +41,5 @@ if __name__ == "__main__":
         Reproducible ( fixed  seeds )
     """
 
-    first_exp.run(  iterations=1, kfold=4, metric="accuracy" )
+    first_exp.run(iterations=1, kfold=4)
+
