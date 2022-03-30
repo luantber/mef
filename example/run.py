@@ -25,7 +25,7 @@ if __name__ == "__main__":
             - Metric(s) to evaluate                      ( )
     """
 
-    first_exp = mef.Experiment(models={"Linear": Linear}, dataset=my_dataset)
+    first_exp = mef.Experiment(models={"Linear": Linear, "CNN": Linear}, dataset=my_dataset)
 
     """
         STEP 2
@@ -41,5 +41,9 @@ if __name__ == "__main__":
         Reproducible ( fixed  seeds )
     """
 
-    first_exp.run(iterations=1, kfold=4)
+    # first_exp.run(iterations=2, kfold=4)
+    print ( first_exp.run_model("Linear", iterations=2,kfold=4) )
+
+    print("---------")
+    print ( first_exp.run_model("CNN", iterations=2,kfold=4) )
 
