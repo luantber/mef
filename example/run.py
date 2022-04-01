@@ -41,9 +41,7 @@ if __name__ == "__main__":
         Reproducible ( fixed  seeds )
     """
 
-    # first_exp.run(iterations=2, kfold=4)
-    print ( first_exp.run_model("Linear", iterations=2,kfold=4) )
 
-    print("---------")
-    print ( first_exp.run_model("CNN", iterations=2,kfold=4) )
+    first_exp.run_model("Linear", iterations=2,kfold=4)
+
 

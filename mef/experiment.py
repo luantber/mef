@@ -1,16 +1,14 @@
-from typing import Any, Dict
+import torch
+from tqdm import tqdm
 from torch.utils.data import Dataset, Subset
-import torch 
 from dataclasses import dataclass
-from typing import Dict, Any
-
 from sklearn.model_selection import KFold
 from pytorch_lightning import LightningModule
-
+from mef.iteration import Iteration, IterationSet
 
 @dataclass
 class Experiment:
-    models: Dict[str, LightningModule]
+    models: dict[str, LightningModule]
     dataset: Dataset
     seed: int = 42
 
@@ -26,7 +24,7 @@ class Experiment:
         results = model.custom_validation(dataset)
         return results
 
-    def run_single(self, model:str, idx_iteration:int, kfold:int):
+    def run_single(self, model_name:str, idx_iteration:int, kfold:int) -> Iteration:
         """
             This run a single iteration
             the seed used to shuffle is the idx_iteration
@@ -39,36 +37,41 @@ class Experiment:
         """
         print(f"\nIteration {idx_iteration}")
 
-        fold_result = []
+        
+
+        kf_iteration = Iteration(kfold, model_name, idx_iteration)
 
         kf = KFold(n_splits=kfold, shuffle=True, random_state=idx_iteration)
-        for train_idx, test_idx in kf.split(self.dataset):
-
-            print("fold")
-            print(test_idx)
+        for train_idx, test_idx in tqdm(kf.split(self.dataset), total=kf.get_n_splits(), desc="k-fold"):
 
             train = Subset(self.dataset, train_idx)
             test = Subset(self.dataset, test_idx)
 
-            model_trained = self.train_single(model, train)
+            model_trained = self.train_single(model_name, train)
             results = self.validate_single(model_trained, test)
 
-            fold_result.append(results)
+            kf_iteration.append(results)
         
-        return fold_result
+        return kf_iteration
 
-    def run_model(self, model:str , iterations: int , kfold:int =4):
+
+    def run_model(self, model_name:str , iterations: int , kfold:int =4) -> IterationSet:
         """
             Can collect the results of single iteration
         """
-        iterations_results = []
-        for i in range(iterations):
-            result = self.run_single(model, i, kfold)
-            iterations_results.append(result)
-        return iterations_results
+        iterations_set = IterationSet(model_name)
 
-    def run_all(self):
-        """
-            Can collect multiple runs 
-        """
-        print("all models")
+        for i in range(iterations):
+
+            kf_iteration = self.run_single(model_name, i, kfold)
+            kf_iteration.store()
+
+            iterations_set.append(kf_iteration)
+        return iterations_set
+
+
+    # def run_all(self):
+    #     """
+    #         Can collect multiple runs 
+    #     """
+    #     print("all models")
