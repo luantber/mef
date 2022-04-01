@@ -6,10 +6,11 @@ from sklearn.model_selection import KFold
 from pytorch_lightning import LightningModule
 from mef.iteration import Iteration, IterationSet
 from mef.model import Model
+from typing import Type 
 
 @dataclass
 class Experiment:
-    models: dict[str, LightningModule]
+    models: dict[str, Type[Model] ]
     dataset: Dataset
     batch_size: int 
     epochs: int
