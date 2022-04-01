@@ -2,3 +2,6 @@ MNIST/
 **/__pycache__/
 lightning_logs/
 *.pk
+dist/
+mef.egg-info/
+build/
