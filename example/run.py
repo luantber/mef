@@ -25,7 +25,7 @@ if __name__ == "__main__":
             - Metric(s) to evaluate                      ( )
     """
 
-    first_exp = mef.Experiment(models={"Linear": Linear, "CNN": Linear}, dataset=my_dataset)
+    first_exp = mef.Experiment(models={"Linear": Linear, "CNN": Linear}, dataset=my_dataset, batch_size=128, epochs=2 )
 
     """
         STEP 2

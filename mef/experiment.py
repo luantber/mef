@@ -5,23 +5,26 @@ from dataclasses import dataclass
 from sklearn.model_selection import KFold
 from pytorch_lightning import LightningModule
 from mef.iteration import Iteration, IterationSet
+from mef.model import Model
 
 @dataclass
 class Experiment:
     models: dict[str, LightningModule]
     dataset: Dataset
+    batch_size: int 
+    epochs: int
     seed: int = 42
 
     ## Single Step of the nested loops
     def train_single(self, model_name: str, dataset: Dataset):
         # Factory Reset Model
         torch.manual_seed(0)
-        model = self.models[model_name]()
-        model.custom_train(dataset)
+        model: Model = self.models[model_name]()
+        model.custom_train(self.batch_size,self.epochs,dataset)
         return model
 
-    def validate_single(self, model: LightningModule, dataset: Dataset):
-        results = model.custom_validation(dataset)
+    def validate_single(self, model: Model, dataset: Dataset):
+        results = model.custom_validation(self.batch_size, dataset)
         return results
 
     def run_single(self, model_name:str, idx_iteration:int, kfold:int) -> Iteration:
@@ -38,7 +41,6 @@ class Experiment:
         print(f"\nIteration {idx_iteration}")
 
         
-
         kf_iteration = Iteration(kfold, model_name, idx_iteration)
 
         kf = KFold(n_splits=kfold, shuffle=True, random_state=idx_iteration)
