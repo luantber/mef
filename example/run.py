@@ -17,7 +17,6 @@ if __name__ == "__main__":
 
     """
         STEP 1
-
         Create Experiment with the following parameters: 
             - Dictionary of Models                       (X)
             - Dataset to be used                         (X)
@@ -29,7 +28,6 @@ if __name__ == "__main__":
 
     """
         STEP 2
-
         Run the experiment 
         which is a nested fors 
             - Iterations

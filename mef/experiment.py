@@ -17,11 +17,11 @@ class Experiment:
     seed: int = 42
 
     ## Single Step of the nested loops
-    def train_single(self, model_name: str, dataset: Dataset):
+    def train_single(self, model_name: str, dataset: Dataset, debug=False):
         # Factory Reset Model
         torch.manual_seed(0)
         model: Model = self.models[model_name]()
-        model.custom_train(self.batch_size,self.epochs,dataset)
+        model.custom_train(self.batch_size,self.epochs,dataset, debug=debug)
         return model
 
     def validate_single(self, model: Model, dataset: Dataset):
@@ -72,6 +72,16 @@ class Experiment:
             iterations_set.append(kf_iteration)
         return iterations_set
 
+
+    def test(self, model_name:str):
+        size_train = int(len(self.dataset)*0.75)
+        size_test = len(self.dataset) - size_train
+
+        train, test = torch.utils.data.random_split(self.dataset, [ size_train , size_test ])
+
+        model = self.train_single(model_name,train,debug=True)
+        result = self.validate_single(model,test)
+        return result
 
     # def run_all(self):
     #     """
