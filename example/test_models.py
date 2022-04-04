@@ -17,7 +17,7 @@ settings = {
 }
     
 exp = mef.Experiment(
-    settings=settings, dataset=dataset, batch_size=128, epochs=15
+    settings=settings, dataset=dataset
 )
 
 results = exp.test("linear_1")

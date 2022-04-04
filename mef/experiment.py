@@ -13,8 +13,6 @@ from mef.setting import Setting
 class Experiment:
     settings: dict[str, Setting]
     dataset: Dataset
-    batch_size: int
-    epochs: int
     seed: int = 42
 
     def train_single(
@@ -76,7 +74,7 @@ class Experiment:
             test = Subset(self.dataset, test_idx)
 
             model_trained = self.train_single(setting_id, train)
-            results = self.validate_single(model_trained, test)
+            results = self.validate_single(model_trained, setting_id, test)
 
             kf_iteration.append(results)
 
