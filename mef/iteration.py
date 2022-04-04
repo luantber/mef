@@ -27,7 +27,16 @@ class IterationSet:
         with open(f"set_{self.model_name}.pk", "wb") as f:
             pickle.dump(self, f)
 
+    @classmethod
+    def load(cls, path: str):
+
+        with open(path, "rb") as file:
+            data = pickle.load(file)
+            return data
+
     def append(self, iteration: Iteration):
         self.iterations.append(iteration)
         self.store()
+
+
 
