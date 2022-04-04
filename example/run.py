@@ -40,6 +40,6 @@ if __name__ == "__main__":
     """
 
 
-    first_exp.run_model("Linear", iterations=2,kfold=4)
+    first_exp.run_model("Linear", n_iterations=2,kfold=4)
 
 
