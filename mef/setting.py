@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from mef import Model
 
+
 @dataclass
 class Setting:
     model: type[Model]

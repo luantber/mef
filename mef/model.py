@@ -5,6 +5,7 @@ from pytorch_lightning.loggers import TensorBoardLogger
 
 # logging.getLogger("pytorch_lightning").setLevel(logging.ERROR)
 
+
 class Model(LightningModule):
     def custom_train(
         self,
@@ -19,7 +20,6 @@ class Model(LightningModule):
 
         logger = TensorBoardLogger("tb_logs", name="my_model")
 
-        # Initialize a trainer
         trainer = Trainer(
             gpus=1,
             max_epochs=epochs,
@@ -35,7 +35,6 @@ class Model(LightningModule):
     def custom_validation(self, batch_size: int, dataset: Dataset):
         val_loader = DataLoader(dataset, batch_size, shuffle=False)
 
-        # Initialize a trainer
         trainer = Trainer(
             gpus=1,
             enable_model_summary=False,

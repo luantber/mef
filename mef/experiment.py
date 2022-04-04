@@ -6,8 +6,6 @@ from sklearn.model_selection import KFold
 
 from mef.iteration import Iteration, IterationSet
 from mef.model import Model
-from typing import Type
-
 from mef.setting import Setting
 
 
@@ -64,6 +62,7 @@ class Experiment:
             - results  len(k fold )
             - idx iteration
         """
+
         print(f"\nIteration {idx_iteration}")
 
         kf_iteration = Iteration(kfold, setting_id, idx_iteration)
@@ -107,7 +106,7 @@ class Experiment:
         )
 
         model = self.train_single(setting_id, train, debug=True, val_dataset=test)
-        result = self.validate_single(model, setting_id ,test)
+        result = self.validate_single(model, setting_id, test)
         return result
 
     # def run_all(self):
