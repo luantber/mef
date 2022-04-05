@@ -80,14 +80,14 @@ class Experiment:
         return kf_iteration
 
     def run_model(
-        self, setting_id: str, n_iterations: int, kfold: int = 4
+        self, setting_id: str, iterations_range: range, kfold: int = 4
     ) -> IterationSet:
         """
             Collects the results of single iterations
         """
         iterations_set = IterationSet(setting_id)
 
-        for i in range(n_iterations):
+        for i in iterations_range:
             kf_iteration = self.run_single(setting_id, i, kfold)
             iterations_set.append(kf_iteration)
             kf_iteration.store()

@@ -46,16 +46,13 @@ if __name__ == "__main__":
     dataset = Mnist()
 
     settings = {
-            "linear_1": mef.Setting(Linear, batch_size=128, epochs=100),
-            "cnn_1": mef.Setting(Cnn, batch_size=128, epochs=100),
+            "linear_1": mef.Setting(Linear, batch_size=256, epochs=5),
+            "cnn_1": mef.Setting(Cnn, batch_size=256, epochs=5),
     }
         
     exp = mef.Experiment(
         settings=settings, dataset=dataset
     )
 
-    exp.run_model("linear_1",10,4)
-    
-
-
-
+    exp.run_model("linear_1",iterations_range=range(10),kfold=4)
+    exp.run_model("cnn_1",iterations_range=range(10),kfold=4)
