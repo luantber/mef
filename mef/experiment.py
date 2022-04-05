@@ -8,7 +8,6 @@ from mef.iteration import Iteration, IterationSet
 from mef.model import Model
 from mef.setting import Setting
 
-
 @dataclass
 class Experiment:
     settings: dict[str, Setting]
@@ -90,8 +89,8 @@ class Experiment:
 
         for i in range(n_iterations):
             kf_iteration = self.run_single(setting_id, i, kfold)
-            kf_iteration.store()
             iterations_set.append(kf_iteration)
+            kf_iteration.store()
 
         return iterations_set
 
