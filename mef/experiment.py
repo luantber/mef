@@ -1,4 +1,5 @@
 import torch
+import os 
 from tqdm import tqdm
 from torch.utils.data import Dataset, Subset
 from dataclasses import dataclass
@@ -13,6 +14,12 @@ class Experiment:
     settings: dict[str, Setting]
     dataset: Dataset
     seed: int = 42
+    path_save: str = "logs/"
+    
+    def __post_init__(self):
+        
+        if not os.path.isdir(self.path_save):
+            os.makedirs(self.path_save)
 
     def train_single(
         self,
@@ -62,7 +69,8 @@ class Experiment:
 
         print(f"\nIteration {idx_iteration}")
 
-        kf_iteration = Iteration(kfold, setting_id, idx_iteration)
+        # kf_iteration = Iteration( kfold, setting_id, idx_iteration, self.path_save)
+        kf_iteration = Iteration( kfold , idx_iteration, self.path_save)
 
         kf = KFold(n_splits=kfold, shuffle=True, random_state=idx_iteration)
         for train_idx, test_idx in tqdm(
@@ -85,7 +93,7 @@ class Experiment:
         """
             Collects the results of single iterations
         """
-        iterations_set = IterationSet(setting_id)
+        iterations_set = IterationSet(setting_id, self.path_save)
 
         for i in iterations_range:
             kf_iteration = self.run_single(setting_id, i, kfold)

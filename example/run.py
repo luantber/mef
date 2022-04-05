@@ -5,7 +5,8 @@ from dataset.mnist import Mnist  ##< "from dataset import Mnist"
 
 from pytorch_lightning import seed_everything
 import warnings
-warnings.filterwarnings('ignore')
+
+warnings.filterwarnings("ignore")
 
 seed_everything(42, workers=True)
 
@@ -40,19 +41,17 @@ if __name__ == "__main__":
         Reproducible ( fixed  seeds )
     """
 
-
     # first_exp.run_model("Linear", n_iterations=2,kfold=4)
 
     dataset = Mnist()
 
     settings = {
-            "linear_1": mef.Setting(Linear, batch_size=256, epochs=5),
-            "cnn_1": mef.Setting(Cnn, batch_size=256, epochs=5),
+        "linear_1": mef.Setting(Linear, batch_size=256, epochs=5),
+        "cnn_1": mef.Setting(Cnn, batch_size=256, epochs=5),
     }
-        
-    exp = mef.Experiment(
-        settings=settings, dataset=dataset
-    )
 
-    exp.run_model("linear_1",iterations_range=range(10),kfold=4)
-    exp.run_model("cnn_1",iterations_range=range(10),kfold=4)
+    exp = mef.Experiment(settings=settings, dataset=dataset, path_save="example/logs/")
+    
+    exp.run_model("linear_1", iterations_range=range(10), kfold=4)
+    exp.run_model("cnn_1", iterations_range=range(10), kfold=4)
+
