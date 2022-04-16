@@ -1,4 +1,3 @@
-import context
 from models.linear import Linear  ## To be improved  to " from models import Linear "
 from models.cnn import Cnn
 from dataset.mnist import Mnist  ##< "from dataset import Mnist"
