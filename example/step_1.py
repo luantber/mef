@@ -1,23 +1,23 @@
+# Import Dataset and models
 from dataset.mnist import Mnist
-from pytorch_lightning import seed_everything
 from models.linear import Linear
 from models.cnn import Cnn
 
-seed_everything(42, workers=True)
+# import mef
 import mef
-from mef import Setting
 
+# Create Dataset 
 dataset = Mnist()
 
+# Configure Settings of models to test
 settings = {
-        "linear_1": Setting(Linear, batch_size=128, epochs=100),
-        "cnn_1": Setting(Cnn, batch_size=128, epochs=100),
+    "linear_1": mef.Setting(Linear, batch_size=128, epochs=100),
+    # "cnn_1": mef.Setting(Cnn, batch_size=128, epochs=100),
 }
-    
-exp = mef.Experiment(
-    settings=settings, dataset=dataset
-)
 
+# Create experiment 
+exp = mef.Experiment(settings=settings, dataset=dataset)
+
+# 
 results = exp.test("linear_1")
-
 print(results)

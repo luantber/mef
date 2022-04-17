@@ -1,13 +1,20 @@
 import logging
+from statistics import mode
 from typing import Optional
 from torch.utils.data import DataLoader, Dataset
 from pytorch_lightning import LightningModule, Trainer
 from pytorch_lightning.loggers import TensorBoardLogger
+from dataclasses import dataclass
 
 logging.getLogger("pytorch_lightning").setLevel(logging.ERROR)
 
 
+
 class Model(LightningModule):
+    def __init__(self, model_name):
+        super().__init__()
+        self.model_name = model_name
+
     def custom_train(
         self,
         batch_size: int,
@@ -17,9 +24,13 @@ class Model(LightningModule):
         val_dataset: Optional[Dataset] = None,
     ):
         train_loader = DataLoader(dataset, batch_size, shuffle=True, num_workers=2)
-        val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False) if val_dataset else None
+        val_loader = (
+            DataLoader(val_dataset, batch_size=batch_size, shuffle=False)
+            if val_dataset
+            else None
+        )
 
-        logger = TensorBoardLogger("tb_logs", name="my_model")
+        logger = TensorBoardLogger("tb_logs", name=self.model_name)
 
         trainer = Trainer(
             gpus=1,

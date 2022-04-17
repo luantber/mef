@@ -4,10 +4,11 @@ from mef import Model
 
 @dataclass
 class Setting:
-    model: type[Model]
+    model_type: type[Model]
     batch_size: int
     epochs: int
 
-    def create_model(self) -> Model:
+    def create_model(self, model_name: str) -> Model:
         # Instantiate model
-        return self.model()
+        ins = self.model_type(model_name)
+        return ins

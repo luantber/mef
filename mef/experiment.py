@@ -17,7 +17,6 @@ class Experiment:
     path_save: str = "logs/"
     
     def __post_init__(self):
-        
         if not os.path.isdir(self.path_save):
             os.makedirs(self.path_save)
 
@@ -37,7 +36,7 @@ class Experiment:
 
         setting = self.settings[setting_id]
 
-        model: Model = setting.create_model()
+        model: Model = setting.create_model(setting_id)
         model.custom_train(
             setting.batch_size,
             setting.epochs,
@@ -103,6 +102,10 @@ class Experiment:
         return iterations_set
 
     def test(self, setting_id: str):
+        """
+        Simulates a single iteration of training of validation
+        """
+
         size_train = int(len(self.dataset) * 0.75)
         size_test = len(self.dataset) - size_train
 

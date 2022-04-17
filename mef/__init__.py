@@ -1,4 +1,4 @@
-print("MEF v0.1.0")
+print("MEF v0.1.1")
 
 from mef.model import Model
 from mef.experiment import Experiment
