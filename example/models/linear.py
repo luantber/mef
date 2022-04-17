@@ -1,6 +1,7 @@
 import torch
 import torchmetrics
 from torch.nn import functional as F
+from torch import nn
 from mef import Model
 
 
@@ -10,6 +11,22 @@ class Linear(Model):
 
         self.l1 = torch.nn.Linear(28 * 28, 10)
         self.accuracy = torchmetrics.Accuracy()
+        # hidden_size = 64
+
+        # self.num_classes = 10
+        # self.dims = (1, 28, 28)
+        # channels, width, height = self.dims
+
+        # self.model = nn.Sequential(
+        #     nn.Flatten(),
+        #     nn.Linear(channels * width * height, hidden_size),
+        #     nn.ReLU(),
+        #     nn.Dropout(0.1),
+        #     nn.Linear(hidden_size, hidden_size),
+        #     nn.ReLU(),
+        #     nn.Dropout(0.1),
+        #     nn.Linear(hidden_size, self.num_classes),
+        # )
 
     def forward(self, x):
         return torch.relu(self.l1(x.view(x.size(0), -1)))

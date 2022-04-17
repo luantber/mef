@@ -1,5 +1,6 @@
+from typing import Optional
 import torch
-import os 
+import os
 from tqdm import tqdm
 from torch.utils.data import Dataset, Subset
 from dataclasses import dataclass
@@ -9,13 +10,14 @@ from mef.iteration import Iteration, IterationSet
 from mef.model import Model
 from mef.setting import Setting
 
+
 @dataclass
 class Experiment:
     settings: dict[str, Setting]
     dataset: Dataset
     seed: int = 42
     path_save: str = "logs/"
-    
+
     def __post_init__(self):
         if not os.path.isdir(self.path_save):
             os.makedirs(self.path_save)
@@ -69,7 +71,7 @@ class Experiment:
         print(f"\nIteration {idx_iteration}")
 
         # kf_iteration = Iteration( kfold, setting_id, idx_iteration, self.path_save)
-        kf_iteration = Iteration( kfold , idx_iteration, self.path_save)
+        kf_iteration = Iteration(kfold, idx_iteration, self.path_save)
 
         kf = KFold(n_splits=kfold, shuffle=True, random_state=idx_iteration)
         for train_idx, test_idx in tqdm(
@@ -101,7 +103,7 @@ class Experiment:
 
         return iterations_set
 
-    def test(self, setting_id: str):
+    def test(self, setting_id: str, seed:Optional[int]=None):
         """
         Simulates a single iteration of training of validation
         """
@@ -110,7 +112,9 @@ class Experiment:
         size_test = len(self.dataset) - size_train
 
         train, test = torch.utils.data.random_split(
-            self.dataset, [size_train, size_test]
+            self.dataset,
+            [size_train, size_test],
+            generator=torch.Generator().manual_seed(seed) if seed else None,
         )
 
         model = self.train_single(setting_id, train, debug=True, val_dataset=test)

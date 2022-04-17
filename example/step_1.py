@@ -19,5 +19,5 @@ settings = {
 exp = mef.Experiment(settings=settings, dataset=dataset)
 
 # 
-results = exp.test("linear_1")
+results = exp.test("linear_1",42)
 print(results)
