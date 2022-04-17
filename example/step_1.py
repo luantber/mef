@@ -6,18 +6,21 @@ from models.cnn import Cnn
 # import mef
 import mef
 
-# Create Dataset 
+# Create Dataset
 dataset = Mnist()
 
 # Configure Settings of models to test
 settings = {
     "linear_1": mef.Setting(Linear, batch_size=128, epochs=100),
-    # "cnn_1": mef.Setting(Cnn, batch_size=128, epochs=100),
+    "cnn_1": mef.Setting(Cnn, batch_size=128, epochs=100),
 }
 
-# Create experiment 
+# Create experiment
 exp = mef.Experiment(settings=settings, dataset=dataset)
 
-# 
-results = exp.test("linear_1",42)
+# Test using a seed
+results = exp.test("linear_1", 42)
+print(results)
+
+results = exp.test("cnn_1", 42)
 print(results)

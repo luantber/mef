@@ -1,18 +1,18 @@
 import torch
-import torchmetrics 
+import torchmetrics
 from torch.nn import functional as F
 from torch.nn import Sequential
-from mef import Model 
+from mef import Model
+
 
 class Cnn(Model):
-
-    def __init__(self):
-        super().__init__()
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.l1 = Sequential(
-            torch.nn.Conv2d(1,64,3),
+            torch.nn.Conv2d(1, 64, 3),
             torch.nn.ReLU(),
             torch.nn.MaxPool2d(3),
-            torch.nn.Conv2d(64,128,3),
+            torch.nn.Conv2d(64, 128, 3),
             torch.nn.ReLU(),
             torch.nn.Flatten(),
             torch.nn.LazyLinear(10),
@@ -25,7 +25,7 @@ class Cnn(Model):
     def training_step(self, batch, idx):
         x, y = batch
         loss = F.cross_entropy(self(x), y)
-        self.log("loss",loss)
+        self.log("loss", loss)
         return loss
 
     def validation_step(self, batch, idx):
@@ -33,7 +33,7 @@ class Cnn(Model):
         loss = F.cross_entropy(self(x), y)
         preds = self(x)
         self.accuracy(preds, y)
-                
+
         self.log("val_loss", loss)
         self.log("val_acc", self.accuracy)
 
