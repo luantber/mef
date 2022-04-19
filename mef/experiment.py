@@ -10,6 +10,7 @@ from mef.iteration import Iteration, IterationSet
 from mef.model import Model
 from mef.setting import Setting
 
+import pytorch_lightning as pl
 
 @dataclass
 class Experiment:
@@ -34,7 +35,9 @@ class Experiment:
             This function train a model using the dataset, returns a model.
         """
 
-        torch.manual_seed(0)
+        pl.utilities.seed.seed_everything(seed=0, workers=True)
+        torch.backends.cudnn.deterministic = True
+        torch.backends.cudnn.benchmark = False
 
         setting = self.settings[setting_id]
 
@@ -52,6 +55,10 @@ class Experiment:
         """
             This function validates the model using the dataset
         """
+        pl.utilities.seed.seed_everything(seed=0, workers=True)
+        torch.backends.cudnn.deterministic = True
+        torch.backends.cudnn.benchmark = False
+        
         setting = self.settings[setting_id]
         results = model.custom_validation(setting.batch_size, dataset)
         return results
@@ -103,7 +110,7 @@ class Experiment:
 
         return iterations_set
 
-    def test(self, setting_id: str, seed:Optional[int]=None):
+    def test(self, setting_id: str, seed: Optional[int] = None):
         """
         Simulates a single iteration of training of validation
         """
