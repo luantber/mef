@@ -10,6 +10,7 @@
 
 - Bug `def custom_validation` in Model, returns a list , should be a dictionary
 - k fold should be fixed for all the experiment
+- How to join two .pks 
 
 # Old
 
