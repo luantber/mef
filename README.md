@@ -1,13 +1,17 @@
 # mef
+
 Model Evaluation Framework
 
+This is a library/framework to be defined. It allows researchers to evaluate their models, using a statistical method.
 
-This is a library/framework to be defined. It allows researchers to evaluate their models, using a statistical method. 
+## Install
 
+- Download
+- `pip install -e .`
 
 ## Tutorial
-Researchers must define models as pytorch classes
 
+Researchers must define models as pytorch classes
 
 ```mermaid
     classDiagram
@@ -16,12 +20,9 @@ Researchers must define models as pytorch classes
     class Dataset
 ```
 
+### Example of usage
 
-
-
-### Example of usage 
-
-This is the Model Definition of two neural nets `NeuralNet` and `ConvNet`. 
+This is the Model Definition of two neural nets `NeuralNet` and `ConvNet`.
 
 ```python
     class NeuralNet(torch.nn):
@@ -42,26 +43,25 @@ This is the Model Definition of two neural nets `NeuralNet` and `ConvNet`.
 
 ```
 
-Second step is having a Dataset class 
+Second step is having a Dataset class
+
 ```python
     class Mnist(Dataset):
         def __init__(self):
         ...
 ```
 
-
 Third step is implementing the abstract class Experiment.
 
 ```python
     class MyRun(Experiment):
-        def __init__(self):        
+        def __init__(self):
 ```
 
-
-Finally add the models to your experiment. 
+Finally add the models to your experiment.
 
 ```python
-    
+
     models = {
         "ConvNet": ConvNet,
         "NeuralNet": NeuralNet
