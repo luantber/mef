@@ -90,6 +90,7 @@ def show_results(it_a: IterationSet, it_b: IterationSet):
 
     ps = []
     ws = []
+    means = []
 
     for i in range(len(new_its_a)):
         iteration_a = new_its_a[i]
@@ -105,18 +106,27 @@ def show_results(it_a: IterationSet, it_b: IterationSet):
         print(iteration_a_acc, mean_a)
         print(iteration_b_acc, mean_b)
         w, p = wilcoxon(iteration_a_acc, iteration_b_acc)
-        print(w, p, abs(mean_b - mean_a))
+        mean_ = abs(mean_b - mean_a)
+        print(w, p, mean_ )
 
         # print("\n\n")
         ps.append(p)
         ws.append(w)
+        means.append(mean_)
 
-    # plt.hist(ps)
-    # plt.show()
-    fig, ax = plt.subplots()
 
-    sns.histplot(ws, ax=ax)
+    plt.hist(ws, bins=range(10), ec="black",density=True)
+    plt.axvline(1, color="k", linestyle="dashed", linewidth=1)
+    plt.xticks(range(10))
+    plt.show()
+
+
+
+
+    # fig, ax = plt.subplots()
+
+    # sns.histplot(ws, ax=ax)
     # sns.histplot(ps, binwidth=0.05, ax=ax)
     # ax.set_xlim(0, 1.5)
     # ax.set_xticks([0.05,0.1,0.5,1])
-    plt.show()
+    # plt.show()
