@@ -9,7 +9,6 @@ from dataclasses import dataclass
 logging.getLogger("pytorch_lightning").setLevel(logging.ERROR)
 
 
-
 class Model(LightningModule):
     def __init__(self, model_name):
         super().__init__()
@@ -22,10 +21,15 @@ class Model(LightningModule):
         dataset: Dataset,
         debug=False,
         val_dataset: Optional[Dataset] = None,
+        dataloader_args={},
     ):
-        train_loader = DataLoader(dataset, batch_size, shuffle=True, num_workers=2)
+        train_loader = DataLoader(
+            dataset, batch_size, shuffle=True, num_workers=2, **dataloader_args
+        )
         val_loader = (
-            DataLoader(val_dataset, batch_size=batch_size, shuffle=False)
+            DataLoader(
+                val_dataset, batch_size=batch_size, shuffle=False, **dataloader_args
+            )
             if val_dataset
             else None
         )
@@ -44,8 +48,8 @@ class Model(LightningModule):
         # Train the model
         trainer.fit(self, train_loader, val_dataloaders=val_loader)
 
-    def custom_validation(self, batch_size: int, dataset: Dataset):
-        val_loader = DataLoader(dataset, batch_size, shuffle=False)
+    def custom_validation(self, batch_size: int, dataset: Dataset, dataloader_args={}):
+        val_loader = DataLoader(dataset, batch_size, shuffle=False, **dataloader_args)
 
         trainer = Trainer(
             gpus=1,

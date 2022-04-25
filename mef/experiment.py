@@ -12,6 +12,7 @@ from mef.setting import Setting
 
 import pytorch_lightning as pl
 
+
 @dataclass
 class Experiment:
     settings: dict[str, Setting]
@@ -48,6 +49,7 @@ class Experiment:
             dataset,
             debug=debug,
             val_dataset=val_dataset,
+            dataloader_args=setting.dataloader_args,
         )
         return model
 
@@ -58,9 +60,11 @@ class Experiment:
         pl.utilities.seed.seed_everything(seed=0, workers=True)
         torch.backends.cudnn.deterministic = True
         torch.backends.cudnn.benchmark = False
-        
+
         setting = self.settings[setting_id]
-        results = model.custom_validation(setting.batch_size, dataset)
+        results = model.custom_validation(
+            setting.batch_size, dataset, dataloader_args=setting.dataloader_args
+        )
         return results
 
     def run_single(self, setting_id: str, idx_iteration: int, kfold: int) -> Iteration:
