@@ -1,5 +1,4 @@
 import logging
-from statistics import mode
 from typing import Optional
 from torch.utils.data import DataLoader, Dataset
 from pytorch_lightning import LightningModule, Trainer
@@ -41,7 +40,8 @@ class Model(LightningModule):
             max_epochs=epochs,
             enable_model_summary=False,
             enable_progress_bar=debug,
-            logger=logger
+            log_every_n_steps=2,
+            logger=logger,
             # progress_bar_refresh_rate=20,
         )
 
