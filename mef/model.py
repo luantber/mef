@@ -24,7 +24,7 @@ class Model(LightningModule):
         dataloader_args={},
     ):
         train_loader = DataLoader(
-            dataset, batch_size, shuffle=True, num_workers=2, **dataloader_args
+               dataset, batch_size, shuffle=True, **dataloader_args
         )
         val_loader = (
             DataLoader(
