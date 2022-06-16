@@ -4,6 +4,7 @@ from datetime import datetime
 import pickle
 from faker import Faker
 import os
+import numpy as np
 from numpy import mean
 from scipy.stats import wilcoxon
 import matplotlib.pyplot as plt
@@ -86,7 +87,7 @@ def show_results(it_a: IterationSet, it_b: IterationSet):
     new_its_b = list(filter(is_in_common_func, it_b.iterations))
 
     assert len(new_its_a) == len(new_its_b)
-    print(common_idx)
+    print("Common Iterations", common_idx)
 
     ps = []
     ws = []
@@ -104,20 +105,27 @@ def show_results(it_a: IterationSet, it_b: IterationSet):
         mean_a = mean(iteration_a_acc)
         mean_b = mean(iteration_b_acc)
         print(iteration_a_acc, mean_a)
-        print(iteration_b_acc, mean_b)
-        w, p = wilcoxon(iteration_a_acc, iteration_b_acc)
+        print(iteration_b_acc, mean_b,sep="\n\n")
+        w, p = wilcoxon(iteration_a_acc, iteration_b_acc, mode="exact")
         mean_ = abs(mean_b - mean_a)
-        print(w, p, mean_ )
+        # print(w, p, mean_ )
 
         # print("\n\n")
         ps.append(p)
         ws.append(w)
         means.append(mean_)
 
+    print("ws ranks",ws)
+    print("ws ranks",ps)
 
-    plt.hist(ws, bins=range(10), ec="black",density=True)
-    plt.axvline(1, color="k", linestyle="dashed", linewidth=1)
-    plt.xticks(range(10))
+    plt.figure(figsize=(12,5))
+    plt.hist(ps, bins=np.arange(0.0,1,0.05), ec="black")
+    plt.axvline(0.05, color="k", linestyle="dashed", linewidth=1)
+    plt.xticks(np.arange(0,1,0.05))
+    plt.xlabel("p-value")
+    plt.ylabel("Count")
+    plt.title(f"Training accuracy p-values: {it_a.model_name} vs {it_b.model_name}")
+
     plt.show()
 
 
